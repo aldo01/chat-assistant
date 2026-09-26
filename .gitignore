@@ -1,0 +1,15 @@
+target/
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+.env
+.env.*
+!.env.example
+
+# Local runtime provider config — contains API keys, never commit
+config/provider-config.json
+
+*.log
+hs_err_pid*
