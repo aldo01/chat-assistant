@@ -1,0 +1,26 @@
+# Local run profile: activate with --spring.profiles.active=local
+# Overrides ports to avoid clashes and disables Kafka (ingest via REST).
+server:
+  port: 8088
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/chat
+  data:
+    redis:
+      port: 6380
+  kafka:
+    listener:
+      auto-startup: false
+
+  ai:
+    vectorstore:
+      qdrant:
+        host: localhost
+        port: 6334
+
+app:
+  reranker:
+    provider: none
+  elasticsearch:
+    hosts: http://localhost:9200
