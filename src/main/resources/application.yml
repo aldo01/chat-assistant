@@ -1,0 +1,83 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: chat-assistant
+
+  # The provider models are built at runtime from user-supplied keys
+  # (see provider/ package), so Spring AI's key-requiring auto-config is disabled.
+  autoconfigure:
+    exclude:
+      - org.springframework.ai.autoconfigure.openai.OpenAiAutoConfiguration
+      - org.springframework.ai.autoconfigure.anthropic.AnthropicAutoConfiguration
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/chat
+    username: chat
+    password: chat
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: chat-ingest
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      max-poll-records: 32
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY:}
+      embedding:
+        options:
+          model: text-embedding-3-small
+      chat:
+        options:
+          model: gpt-4o-mini
+          temperature: 0.2
+    vectorstore:
+      qdrant:
+        host: localhost
+        port: 6334
+        collection-name: chat_chunks
+        use-tls: false
+        initialize-schema: true
+
+app:
+  ingest:
+    kafka-topic-raw: docs.raw
+    chunk-target-tokens: 400
+    chunk-overlap-tokens: 60
+    embedding-batch-size: 64
+  retrieval:
+    top-k-dense: 25
+    top-k-sparse: 25
+    top-k-final: 5
+    rrf-k: 60
+  reranker:
+    provider: cohere            # cohere | none
+    cohere-api-key: ${COHERE_API_KEY:}
+    model: rerank-english-v3.0
+  elasticsearch:
+    hosts: http://localhost:9200
+    index: chat_chunks
+  cors:
+    allowed-origins: "*"        # tighten in prod!
+
+logging:
+  level:
+    com.company.chatassistant: INFO
+    org.springframework.ai: INFO
