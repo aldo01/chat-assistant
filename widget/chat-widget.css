@@ -1,0 +1,296 @@
+.caw-widget,
+.caw-widget * {
+  box-sizing: border-box;
+}
+
+.caw-widget {
+  --caw-accent: #2563eb;
+  --caw-text: #172033;
+  --caw-muted: #667085;
+  position: fixed;
+  z-index: 2147483000;
+  right: 24px;
+  bottom: 24px;
+  color: var(--caw-text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.caw-launcher {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  margin-left: auto;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--caw-accent);
+  box-shadow: 0 12px 30px rgb(15 23 42 / 24%);
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.caw-launcher:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgb(15 23 42 / 30%);
+}
+
+.caw-launcher:focus-visible,
+.caw-close:focus-visible,
+.caw-send:focus-visible,
+.caw-input:focus-visible,
+.caw-citation:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--caw-accent) 35%, white);
+  outline-offset: 2px;
+}
+
+.caw-launcher svg {
+  width: 27px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.caw-panel {
+  width: min(380px, calc(100vw - 32px));
+  height: min(600px, calc(100vh - 110px));
+  margin-bottom: 14px;
+  overflow: hidden;
+  border: 1px solid #e4e7ec;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 24px 70px rgb(15 23 42 / 24%);
+}
+
+.caw-panel:not([hidden]) {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  animation: caw-open 180ms ease-out;
+}
+
+.caw-header {
+  display: flex;
+  min-height: 68px;
+  padding: 14px 16px;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  background: var(--caw-accent);
+}
+
+.caw-heading {
+  display: grid;
+  gap: 1px;
+}
+
+.caw-title {
+  font-size: 16px;
+}
+
+.caw-status {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.caw-close {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-size: 27px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.caw-close:hover {
+  background: rgb(255 255 255 / 14%);
+}
+
+.caw-messages {
+  display: flex;
+  min-height: 0;
+  padding: 18px 14px;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  background: #f8fafc;
+  overscroll-behavior: contain;
+}
+
+.caw-message {
+  display: flex;
+  max-width: 88%;
+}
+
+.caw-user {
+  align-self: flex-end;
+}
+
+.caw-assistant {
+  align-self: flex-start;
+}
+
+.caw-bubble {
+  padding: 10px 12px;
+  border-radius: 14px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.caw-user .caw-bubble {
+  color: #fff;
+  background: var(--caw-accent);
+  border-bottom-right-radius: 4px;
+}
+
+.caw-assistant .caw-bubble {
+  border: 1px solid #eaecf0;
+  background: #fff;
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 2px 5px rgb(15 23 42 / 5%);
+}
+
+.caw-pending .caw-text::after {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 4px;
+  border-radius: 50%;
+  background: var(--caw-muted);
+  animation: caw-pulse 900ms ease-in-out infinite alternate;
+}
+
+.caw-error .caw-bubble {
+  color: #b42318;
+  border-color: #fecdca;
+  background: #fffbfa;
+}
+
+.caw-citations {
+  display: flex;
+  margin-top: 10px;
+  padding-top: 9px;
+  flex-wrap: wrap;
+  gap: 6px;
+  border-top: 1px solid #eaecf0;
+  white-space: normal;
+}
+
+.caw-citations-label {
+  width: 100%;
+  color: var(--caw-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.caw-citation {
+  max-width: 100%;
+  padding: 4px 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  color: var(--caw-accent);
+  background: color-mix(in srgb, var(--caw-accent) 9%, white);
+  font-size: 12px;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.caw-citation:hover {
+  text-decoration: underline;
+}
+
+.caw-form {
+  display: flex;
+  padding: 12px;
+  align-items: flex-end;
+  gap: 8px;
+  border-top: 1px solid #eaecf0;
+  background: #fff;
+}
+
+.caw-input {
+  min-height: 42px;
+  max-height: 120px;
+  padding: 10px 12px;
+  flex: 1;
+  resize: none;
+  border: 1px solid #d0d5dd;
+  border-radius: 11px;
+  color: var(--caw-text);
+  background: #fff;
+  font: inherit;
+  line-height: 20px;
+}
+
+.caw-input::placeholder {
+  color: #98a2b3;
+}
+
+.caw-send {
+  min-width: 62px;
+  height: 42px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 11px;
+  color: #fff;
+  background: var(--caw-accent);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.caw-send:disabled,
+.caw-input:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@keyframes caw-open {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+@keyframes caw-pulse {
+  to {
+    opacity: 0.25;
+    transform: scale(0.8);
+  }
+}
+
+@media (max-width: 520px) {
+  .caw-widget {
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .caw-panel {
+    width: calc(100vw - 32px);
+    height: calc(100dvh - 96px);
+    border-radius: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caw-panel:not([hidden]),
+  .caw-launcher,
+  .caw-pending .caw-text::after {
+    animation: none;
+    transition: none;
+  }
+}
